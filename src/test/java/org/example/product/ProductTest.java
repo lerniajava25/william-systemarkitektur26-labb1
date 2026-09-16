@@ -67,6 +67,19 @@ class ProductTest {
     }
 
     @Test
+    void initializeDiscountPercentWithNaN_ThrowsIllegalArgumentException() {
+        Product product = new Product.Builder()
+                .id("1")
+                .name("Test")
+                .price(BigDecimal.valueOf(100))
+                .build();
+
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> new DiscountDecorator(product, Double.NaN))
+                .withMessage("Värdet på rabatten får inte vara NaN");
+    }
+
+    @Test
     void getPriceOfDiscountedProduct_ShouldReturnDiscountedPrice() {
         Product product = new Product.Builder()
                 .id("1")

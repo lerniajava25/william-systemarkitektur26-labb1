@@ -9,6 +9,9 @@ public class DiscountDecorator extends ProductDecorator {
     private final double discountPercent;
 
     public DiscountDecorator(Sellable sellableProduct, double discountPercent) {
+        if(Double.isNaN(discountPercent)) {
+            throw new IllegalArgumentException("Värdet på rabatten får inte vara NaN");
+        }
         super(sellableProduct);
         this.discountPercent = Math.clamp(discountPercent, 0.0, 1.0);
     }
