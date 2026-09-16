@@ -4,7 +4,6 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -32,18 +31,22 @@ class ProductTest {
 
     @Test
     void createProductWithMissingOptionalFields_UsesFallbackValues() {
+        LocalDateTime before = LocalDateTime.now().minusSeconds(1);
+
         Product product = new Product.Builder()
                 .id("1")
                 .name("Test")
                 .build();
 
+        LocalDateTime after = LocalDateTime.now().plusSeconds(1);
+
         SoftAssertions.assertSoftly(softly -> {
             softly.assertThat(product.getCategory()).isEqualTo(Product.Category.MISC);
             softly.assertThat(product.getRating()).isEqualTo(0.0);
             softly.assertThat(product.getCreatedDate())
-                    .isCloseTo(LocalDateTime.now(), within(1, ChronoUnit.SECONDS));
+                    .isBetween(before, after);
             softly.assertThat(product.getModifiedDate())
-                    .isCloseTo(LocalDateTime.now(), within(1, ChronoUnit.SECONDS));
+                    .isBetween(before, after);
         });
     }
 }
