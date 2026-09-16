@@ -1,8 +1,9 @@
 package org.example.product;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class Product {
+public class Product implements Sellable {
     public enum Category {
         TOOLS,
         PAINT,
@@ -14,6 +15,7 @@ public class Product {
     private final String name;
     private final Category category;
     private final double rating;
+    private final BigDecimal price;
     private final LocalDateTime createdDate;
     private final LocalDateTime modifiedDate;
 
@@ -22,6 +24,7 @@ public class Product {
         this.name = builder.name;
         this.category = builder.category;
         this.rating = builder.rating;
+        this.price = builder.price;
         this.createdDate = builder.createdDate;
         this.modifiedDate = builder.modifiedDate;
     }
@@ -42,6 +45,10 @@ public class Product {
         return rating;
     }
 
+    public BigDecimal getPrice() {
+        return price;
+    }
+
     public LocalDateTime getCreatedDate() {
         return createdDate;
     }
@@ -55,6 +62,7 @@ public class Product {
         private String name;
         private Category category;
         private Double rating;
+        private BigDecimal price;
         private LocalDateTime createdDate;
         private LocalDateTime modifiedDate;
 
@@ -75,6 +83,11 @@ public class Product {
 
         public Builder rating(double rating) {
             this.rating = rating;
+            return this;
+        }
+
+        public Builder price(BigDecimal price) {
+            this.price = price;
             return this;
         }
 
@@ -103,6 +116,10 @@ public class Product {
 
             if(rating == null) {
                 rating = 0.0;
+            }
+
+            if(price == null) {
+                throw new IllegalArgumentException("Produkten saknar ett pris");
             }
 
             if(createdDate == null) {
